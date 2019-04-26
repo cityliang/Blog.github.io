@@ -1,44 +1,99 @@
-This repository is no longer maintained. 
-============
+---
+layout: post
+title: 推荐一个jekyll博客模板
+date: 2017-06-04
+header-img: "img/home-bg.jpg"
+tags:
+     - jekyll
+author: '老付'
+---
 
-Herring Cove
-============
-
-Herring Cove is a clean and responsive theme for Jekyll. 
 
 
-### Overview 
+本人用的模板是基于Codeboy的博客模板改造[模板](https://github.com/fuwei199006/CodeboyBlog){:target="_blank"},(由于本人可能会有很多样式修改,所以不再将修改pullrequst到原项目,在此对codeboy模板表示感谢)。功能改造如下：
 
-* Fixed Sidebar with social links
-* Minimal design 
-* Comments by Disqus
-* Social Sharing abilities 
-* Easy to configure
-* Based on Bootstrap
+ 
+#### 添加微信支付宝打赏    
 
-### Screenshots
+这里也是一个开源的项目，[项目地址](https://github.com/greedying/tctip),使用很方便，直接引用到项目中，配置下就可了：   
 
-![screenshot](/images/screenshot1.png)
-![screenshot](/images/screenshot2.png)
+``` html
+<script>
+window.tctipConfig = {
+        staticPrefix:   "http://static.tctip.com",
+        buttonImageId:  1,
+        buttonTip:  "zanzhu",
+        list:{
+            alipay: {qrimg: "http://blog.laofu.online/img/assets/o_zhifubao.png"},
+            weixin:{qrimg: "http://blog.laofu.online/img/assets/o_weixin.png"}, 
+        }
+};
+</script>
 
-### Setup
+<script src="http://static.tctip.com/js/tctip.min.js"></script>
+``` 
 
-1. Install Jekyll
-2. Fork or [download](https://github.com/arnp/herring-cove/archive/master.zip) this theme repo
-3. Edit the `_config.yml` file
+   ![weixin](/img/assets/weixin.png)
 
-You can change the showcase image by replacing `showcase.jpg` file in the `images` folder. I'll try to find a better way to do this soon. 
+#### 百度流量监控   
 
-### Download
+为了查看个人的博客的人气，添加了百度的统计模块，可以方便的看到博客的pv/uv.[注册地址](https://tongji.baidu.com/web/welcome/login){:target="_blank"}    
 
-[download](https://github.com/arnp/herring-cove/archive/master.zip)
+![static](/img/assets/statics.png)     
 
-### License
-* [MIT](http://opensource.org/licenses/MIT)
+具体的添加方式如下 ：
 
--------------
-Herring Cove is always a work in progress and as such, I hope to clean up the code and add features as time permits. Feel free to add your own additions. 
+ 1. 在_incluides文件夹下添加一个baidu_analyze.html的文件,内容如下       
 
-*What's with the name?*
+	 ``` html   
+	 {% raw %}
+	{%if site.baidu_analyze %}
+	<script>
+	var _hmt = _hmt || [];
+	(function() {
+	  var hm = document.createElement("script");
+	  hm.src = "//hm.baidu.com/hm.js?{{site.baidu_analyze}}";
+	  var s = document.getElementsByTagName("script")[0]; 
+	  s.parentNode.insertBefore(hm, s);
+	})();
+	</script>
 
-[Herring Cove](http://www.capecodbeachchair.com/beachguide/index.cfm?page=3&BeachID=5) is a beach on Cape Cod in Provincetown, Massachusetts. If you're in the area, be sure to check it out!
+	{% endif %}
+	{% endraw %}
+	 ```      
+   {% raw %}{{site.baidu_analyze}} {% endraw %} 是一个变量，可以把你申请的baidu的key值作为_config.yml的配置值存储下来。
+
+2. 下面只需要保证所有的post生成都能包含这个html就可以了 ，我的选择是在head里面中把baidu_analyze.html包含进去：  
+
+  ![head](/img/assets/baidu_analyze.png)    
+
+#### 添加thickbox插件       
+
+这个插件是一个图片的浏览插件,[thickbox官方网站](http://codylindley.com/thickbox/){:target="_blank"}。首先先引入对应的js ,具体的使用是在img的标签上包含一个a标签,这个动作可以使用jQuery方便的实现：   
+
+  ``` js       
+
+	<script type="text/javascript">
+	    
+	  (function(){
+	        $("article img").each(function(index,value){
+
+	            var aDom=$("<a></a>").attr({"href":$(value).attr("src")+"?inlineId=myOnPageContent"}).addClass("thickbox");
+	            $(value).wrap(aDom);
+
+	        });
+	    })();
+	</script>
+
+  ```     
+  thickbox的演示后的效果:
+
+  ![thickbox](/img/assets/thickbox.png)
+
+#### 其它样式问题
+- 图片的样式由由居中改成居左   
+
+- 去除代码行号样式错乱问题   
+
+
+[github地址](https://github.com/fuwei199006/JekyllTemplate){:target="_blank"}
